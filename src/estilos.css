@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 .bn *{box-sizing:border-box;margin:0;padding:0}
 .bn{
- --tinta:#111112;--tinta-alta:#1A1A1C;--blanco:#FFFFFF;--hueso:#F5F3EF;
+ --tinta:#14151E;--tinta-alta:#1A1A1C;--blanco:#FFFFFF;--hueso:#F5F3EF;
  --texto:#111112;--texto-2:#55555A;--texto-3:#8E8E93;--texto-inv:#F5F3EF;--texto-inv-2:#9A9A9E;
  --linea:#E4E4E2;--linea-osc:#3D3D41;
  --alerta:#A0703C;--alerta-fondo:#F7F2EA;--alerta-inv:#D9A76B;
@@ -13,13 +13,12 @@
 .bn button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .bn input,.bn select,.bn textarea{font-family:inherit;color:inherit}
 .bn :focus-visible{outline:2px solid var(--tinta);outline-offset:2px;border-radius:0}
-.bn h1,.bn h2,.bn h3,.bn .cuenta-num,.bn .kpi-n,.bn .marca{font-family:var(--display);font-weight:500;letter-spacing:-.02em}
+.bn h1,.bn h2,.bn h3,.bn .cuenta-num,.bn .kpi-n{font-family:var(--display);font-weight:500;letter-spacing:-.02em}
 .bn .cuenta-num{letter-spacing:-.035em}
 .eyebrow{font-family:var(--fuente);font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-3)}
 
 .top{background:var(--tinta);color:var(--hueso);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.marca{font-size:17px}
-.marca span{color:var(--texto-inv-2)}
+.logo-move{height:22px;width:auto;display:block}
 .roles{display:flex;gap:2px;background:rgba(255,255,255,.08);padding:3px}
 .rol{font-size:12.5px;font-weight:600;padding:7px 15px;color:var(--texto-inv-2);transition:all .16s}
 .rol.on{background:var(--hueso);color:var(--tinta)}

@@ -9,6 +9,7 @@ import { HOY, SEMANAS_VALIDEZ, SESIONES_BASE, nuevoId, masSemanas,
   bonoVigente, bonoUsable, bonoPendiente, fFecha, fHora, plural, norm,
   renovarBono, reactivarBono, prorrogarBono, anularConsumo } from './dominio/bonos.js';
 import { DATOS, clasesIniciales } from './datos/ejemplo.js';
+import { Logo } from './componentes/comunes.jsx';
 import { Acceso, Registro, Verificar } from './componentes/acceso.jsx';
 import { VistaDeportista } from './componentes/deportista.jsx';
 import { PasarLista, Clases, Clientes, AltaCliente, Dialogo } from './componentes/recepcion.jsx';
@@ -183,7 +184,7 @@ export default function App() {
   return (
     <div className="bn">
       <header className="top">
-        <div className="marca">Centro<span>·</span>Bonos</div>
+        <Logo fondo="oscuro" />
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           {rol === "deportista" && sesion && <button className="salir" onClick={salir}>Salir</button>}
           <div className="roles">

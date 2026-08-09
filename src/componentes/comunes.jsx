@@ -8,6 +8,14 @@ import { CLAVES_DEBILES } from '../datos/ejemplo.js';
 
 /* ═══════════════════ piezas ═══════════════════ */
 
+/* logotipo MOVE: sobre fondo oscuro se ve la versión blanca, sobre
+   fondo claro la versión oscura. Hoy solo se usa en la cabecera
+   (siempre oscura), pero queda listo para cualquier otro fondo. */
+export function Logo({ fondo = "oscuro", className, ...props }) {
+  const src = fondo === "oscuro" ? "/logo-move-blanco.png" : "/logo-move-oscuro.png";
+  return <img src={src} alt="MOVE" className={className ? `logo-move ${className}` : "logo-move"} {...props} />;
+}
+
 export function Medidor({ b, mini = false, apagado = false }) {
   const orden = ordenados(b);
   return (
