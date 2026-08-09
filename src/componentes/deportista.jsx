@@ -120,7 +120,7 @@ export function BonoPasado({ b }) {
       </div>
       <Medidor b={b} mini apagado />
       {e === "renovado" && sobra > 0 && <div className="sub" style={{ marginTop: 10 }}>↳ {plural(sobra, "sesión pasó", "sesiones pasaron")} al bono siguiente</div>}
-      {e === "caducado" && sobra > 0 && <div className="sub" style={{ marginTop: 10, color: "var(--red)" }}>↳ {plural(sobra, "sesión caducó", "sesiones caducaron")} sin usar</div>}
+      {e === "caducado" && sobra > 0 && <div className="sub" style={{ marginTop: 10, color: "var(--critico)" }}>↳ {plural(sobra, "sesión caducó", "sesiones caducaron")} sin usar</div>}
       <button className="btn mini" style={{ marginTop: 14 }} onClick={() => setAbierto(!abierto)}>{abierto ? "Ocultar fechas" : "Ver fechas"}</button>
       {abierto && (
         <div className="anular" style={{ marginTop: 12 }}>
