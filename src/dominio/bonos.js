@@ -47,6 +47,44 @@ export const bonoPendiente = (c) => c.bonos.find((b) => ["activo", "congelado", 
 export const bonosPasados = (c) => c.bonos.filter((b) => !["activo", "congelado"].includes(estado(b)));
 export const ordenados = (b) => [...b.consumos].sort((a, c) => new Date(a.fecha) - new Date(c.fecha));
 
+/* ─── operaciones ───
+   Cada una recibe el bono tal cual está y devuelve la pieza nueva, sin
+   tocar clientes ni clases: eso es cableado de App.jsx, no una regla. */
+
+/* renovar: si el bono anterior sigue vivo (activo o congelado), sus sesiones
+   sin usar se arrastran; si está caducado o agotado, no se arrastra nada */
+export const renovarBono = (bonoAnterior, fechaCompra) => {
+  const arrastradas = bonoAnterior && ["activo", "congelado"].includes(estado(bonoAnterior)) ? restantes(bonoAnterior) : 0;
+  const bonoCerrado = bonoAnterior ? { ...bonoAnterior, cerrado: true, congelacion: null } : null;
+  return { bonoNuevo: crearBono(fechaCompra, { arrastradas }), bonoCerrado, arrastradas };
+};
+
+/* reactivar: los días que ha estado en pausa se suman a la caducidad como
+   un ajuste más, igual que una prórroga */
+export const reactivarBono = (bono) => {
+  const dias = Math.max(1, Math.ceil((HOY - new Date(bono.congelacion.desde)) / DIA));
+  return {
+    dias,
+    bono: {
+      ...bono, congelacion: null,
+      ajustes: [...bono.ajustes, { id: nuevoId(), tipo: "pausa", dias, motivo: `Pausa recuperada · ${bono.congelacion.motivo}`, fecha: new Date().toISOString() }],
+    },
+  };
+};
+
+/* prórroga: motivo justificado ya validado por quien llama */
+export const prorrogarBono = (bono, dias, motivo) => ({
+  ...bono,
+  ajustes: [...bono.ajustes, { id: nuevoId(), tipo: "prorroga", dias, motivo, fecha: new Date().toISOString() }],
+});
+
+/* anular una sesión: la quita de cualquier bono del cliente que la tenga,
+   así vuelve a contar en el saldo disponible */
+export const anularConsumo = (cliente, consumoId) => ({
+  ...cliente,
+  bonos: cliente.bonos.map((b) => ({ ...b, consumos: b.consumos.filter((x) => x.id !== consumoId) })),
+});
+
 /* ─── formato ─── */
 export const fFecha = (i) => new Date(i).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
 export const fCorta = (i) => new Date(i).toLocaleDateString("es-ES", { day: "2-digit", month: "short" });

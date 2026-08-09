@@ -4,9 +4,10 @@
  */
 import React, { useState, useMemo } from 'react';
 import './estilos.css';
-import { HOY, DIA, SEMANAS_VALIDEZ, SESIONES_BASE, nuevoId, masDias, masSemanas,
-  crearBono, totalSesiones, restantes, caducidad, diasParaCaducar, estado,
-  bonoVigente, bonoUsable, bonoPendiente, fFecha, fHora, plural, norm } from './dominio/bonos.js';
+import { HOY, SEMANAS_VALIDEZ, SESIONES_BASE, nuevoId, masSemanas,
+  crearBono, totalSesiones, restantes, caducidad, diasParaCaducar,
+  bonoVigente, bonoUsable, bonoPendiente, fFecha, fHora, plural, norm,
+  renovarBono, reactivarBono, prorrogarBono, anularConsumo } from './dominio/bonos.js';
 import { DATOS, clasesIniciales } from './datos/ejemplo.js';
 import { Acceso, Registro, Verificar } from './componentes/acceso.jsx';
 import { VistaDeportista } from './componentes/deportista.jsx';
@@ -55,7 +56,7 @@ export default function App() {
   }, [claseAbierta]);
 
   const quitarConsumo = (cid, xid) => {
-    setClientes((prev) => prev.map((c) => c.id !== cid ? c : { ...c, bonos: c.bonos.map((b) => ({ ...b, consumos: b.consumos.filter((x) => x.id !== xid) })) }));
+    setClientes((prev) => prev.map((c) => c.id !== cid ? c : anularConsumo(c, xid)));
     setClases((prev) => prev.map((k) => ({ ...k, asistentes: k.asistentes.filter((a) => a.consumoId !== xid) })));
   };
 
@@ -149,11 +150,11 @@ export default function App() {
     }
     if (tipo === "renovar") {
       const compra = new Date().toISOString();
-      const arr = b && ["activo", "congelado"].includes(estado(b)) ? restantes(b) : 0;
+      const { bonoNuevo, bonoCerrado, arrastradas: arr } = renovarBono(b, compra);
       setClientes((prev) => prev.map((c) => {
         if (c.id !== clienteId) return c;
-        const cerrados = c.bonos.map((x) => x.id === b?.id ? { ...x, cerrado: true, congelacion: null } : x);
-        return { ...c, bonos: [crearBono(compra, { arrastradas: arr }), ...cerrados] };
+        const cerrados = c.bonos.map((x) => x.id === b?.id ? bonoCerrado : x);
+        return { ...c, bonos: [bonoNuevo, ...cerrados] };
       }));
       avisar(`Bono activado · ${nombre} tiene ${SESIONES_BASE + arr} sesiones hasta el ${fFecha(masSemanas(compra, SEMANAS_VALIDEZ))}`);
     }
@@ -162,12 +163,13 @@ export default function App() {
       avisar(`Bono de ${nombre} en pausa. La caducidad deja de correr.`);
     }
     if (tipo === "reactivar") {
-      const parado = Math.max(1, Math.ceil((HOY - new Date(b.congelacion.desde)) / DIA));
-      setClientes((prev) => prev.map((c) => c.id !== clienteId ? c : { ...c, bonos: c.bonos.map((x) => x.id === b.id ? { ...x, congelacion: null, ajustes: [...x.ajustes, { id: nuevoId(), tipo: "pausa", dias: parado, motivo: `Pausa recuperada · ${x.congelacion.motivo}`, fecha: new Date().toISOString() }] } : x) }));
+      const { bono: bonoReactivado, dias: parado } = reactivarBono(b);
+      setClientes((prev) => prev.map((c) => c.id !== clienteId ? c : { ...c, bonos: c.bonos.map((x) => x.id === b.id ? bonoReactivado : x) }));
       avisar(`${nombre} vuelve a entrenar · +${plural(parado, "día", "días")} de caducidad`);
     }
     if (tipo === "prorroga") {
-      setClientes((prev) => prev.map((c) => c.id !== clienteId ? c : { ...c, bonos: c.bonos.map((x) => x.id === b.id ? { ...x, ajustes: [...x.ajustes, { id: nuevoId(), tipo: "prorroga", dias, motivo, fecha: new Date().toISOString() }] } : x) }));
+      const bonoProrrogado = prorrogarBono(b, dias, motivo);
+      setClientes((prev) => prev.map((c) => c.id !== clienteId ? c : { ...c, bonos: c.bonos.map((x) => x.id === b.id ? bonoProrrogado : x) }));
       avisar(`Caducidad de ${nombre} ampliada ${plural(dias, "día", "días")}`);
     }
     setDlg(null);
