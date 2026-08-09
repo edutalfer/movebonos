@@ -180,8 +180,6 @@ Un commit inicial. **Sin remoto configurado todavía.**
 ## 7. Lo que falta
 
 **Inmediato**
-- [ ] Volcar al repositorio los cambios de la v6 (registro de clases, cierre de
-      lista, pestaña de historial de clases)
 - [ ] Pruebas automáticas de las reglas difíciles: arrastre, congelación, prórroga
 - [ ] Conectar a GitHub (lo hace el cliente, requiere sus credenciales)
 
