@@ -285,10 +285,10 @@
 .bono .rasgado{background-image:radial-gradient(circle,var(--linea-osc) 1.2px,transparent 1.3px)}
 .bono .cuenta-de,.bono .cuenta-lab{color:var(--texto-inv-2)}
 
-/* medidor sobre oscuro: contorno con más contraste que el del borrador
-   original del documento (--linea-osc sube de #2A2A2C a #3D3D41) para
-   que los diez huecos se cuenten de un vistazo, no solo por el número */
-.bono .seg,.previo .seg{border-color:var(--linea-osc);background:transparent}
+/* medidor sobre oscuro: los huecos vacíos necesitan cuerpo propio, no solo
+   un contorno, para poder contarlos de un vistazo sobre el negro de la
+   tarjeta — de ahí el fondo tenue además del borde más claro */
+.bono .seg,.previo .seg{border-color:#4A4A50;background:rgba(255,255,255,.04)}
 .bono .seg.usada,.previo .seg.usada{background:var(--hueso);border-color:var(--hueso)}
 .bono .seg.usada.pasada{background:var(--texto-inv-2);border-color:var(--texto-inv-2)}
 .bono .seg-n,.previo .seg-n{color:var(--texto-inv-2)}
