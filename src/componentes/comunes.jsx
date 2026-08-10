@@ -12,7 +12,7 @@ import { CLAVES_DEBILES } from '../datos/ejemplo.js';
    fondo claro la versión oscura. Hoy solo se usa en la cabecera
    (siempre oscura), pero queda listo para cualquier otro fondo. */
 export function Logo({ fondo = "oscuro", className, ...props }) {
-  const src = fondo === "oscuro" ? "/logo-move-blanco.png" : "/logo-move-oscuro.png";
+  const src = fondo === "oscuro" ? "/logo-move-blanco-1.png" : "/logo-move-oscuro-1.png";
   return <img src={src} alt="MOVE" className={className ? `logo-move ${className}` : "logo-move"} {...props} />;
 }
 
