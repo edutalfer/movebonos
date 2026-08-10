@@ -94,18 +94,22 @@ export function PasarLista({ clientes, onMarcar, onQuitar, onCerrar, marcados, h
             No pueden entrenar hoy{buscando && bloq.length !== bloqTodos.length ? ` · ${bloq.length} de ${bloqTodos.length}` : ""}
           </span>
           {bloq.length === 0 && <div className="sub" style={{ marginTop: 0 }}>Ninguno coincide con la búsqueda.</div>}
-          {bloq.map((c) => {
-            const b = bonoPendiente(c), e = b ? estado(b) : null;
-            const motivo = e === "congelado" ? `Bono en pausa · ${b.congelacion.motivo}`
-              : e === "caducado" ? `Bono caducado el ${fCorta(caducidad(b))}${restantes(b) > 0 ? ` con ${restantes(b)} sin usar` : ""}`
-              : e === "agotado" ? "Bono completado" : "Sin bono";
-            return (
-              <div className="bloq" key={c.id}>
-                <div><div className="bloq-nom">{c.nombre}</div><div className="sub">{motivo}</div></div>
-                <button className="btn mini" style={{ marginLeft: "auto" }} onClick={() => onIrAFicha(c.id)}>Abrir ficha</button>
-              </div>
-            );
-          })}
+          {bloq.length > 0 && (
+            <div className="bloqs">
+              {bloq.map((c) => {
+                const b = bonoPendiente(c), e = b ? estado(b) : null;
+                const motivo = e === "congelado" ? `Bono en pausa · ${b.congelacion.motivo}`
+                  : e === "caducado" ? `Bono caducado el ${fCorta(caducidad(b))}${restantes(b) > 0 ? ` con ${restantes(b)} sin usar` : ""}`
+                  : e === "agotado" ? "Bono completado" : "Sin bono";
+                return (
+                  <div className="bloq" key={c.id}>
+                    <div><div className="bloq-nom">{c.nombre}</div><div className="sub">{motivo}</div></div>
+                    <button className="btn mini" style={{ marginLeft: "auto" }} onClick={() => onIrAFicha(c.id)}>Abrir ficha</button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </>

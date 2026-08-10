@@ -187,7 +187,8 @@
 .ficha.marcada .ficha-rest{color:var(--texto-inv-2)}
 .ficha-avisin{font-size:11.5px;color:var(--alerta);background:var(--alerta-fondo);display:inline-block;padding:3px 7px;margin-top:8px;font-weight:600}
 .bloqueados{margin-top:26px}
-.bloq{background:var(--blanco);border:1px solid var(--linea);padding:13px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.bloqs{display:flex;flex-direction:column;gap:1px;background:var(--linea);border:1px solid var(--linea)}
+.bloq{background:var(--blanco);padding:13px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .bloq-nom{font-size:14.5px;font-weight:600}
 .panel{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--linea)}
 .kpi{background:var(--blanco);border-right:1px solid var(--linea);padding:14px 16px}
