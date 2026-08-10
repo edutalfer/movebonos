@@ -139,15 +139,37 @@ podría registrarse con el correo de otro y ver su historial.
 
 ## 5. Diseño visual
 
-- **Tipografías:** Bricolage Grotesque (títulos y cifras), Instrument Sans
-  (texto), JetBrains Mono (datos, fechas, etiquetas)
-- **Paleta:** tinta `#14202b`, papel `#eef0ec`, verde alta visibilidad `#c2f04a`
-  con su tono profundo `#86ab13`, ámbar `#f2a23c` para avisos, rojo `#d9484f`
-  para caducado, azul frío `#4a90c4` para pausa
-- **Elemento característico:** el medidor de 10 segmentos inclinados
-  (`transform: skewX(-11deg)`). Las sesiones arrastradas van al final con borde
-  discontinuo
-- Todo en CSS propio, sin framework. Variables CSS en `:root` de `.bn`
+Identidad visual **MOVE** (move.vendoo.ad) aplicada según la especificación de
+`docs/ESTILO-MOVE.md`. Sustituye a la paleta de color propia del prototipo.
+
+- **Tipografías:** Clash Display (peso 500, tracking negativo `-0.02em`, más
+  apretado todavía en la cifra grande del bono) para títulos y cifras; Hanken
+  Grotesk para todo lo demás — texto, botones, campos y etiquetas, incluidos
+  los datos que antes llevaban monoespaciada (fechas, contadores), ahora con
+  `font-variant-numeric: tabular-nums` para que sigan alineando en columna
+- **Paleta monocroma:** tinta `#14151E` (el color real del logotipo), blanco
+  puro `#FFFFFF` y hueso `#F5F3EF` como base. El único color son tres tonos de
+  estado — alerta (cobre), crítico (ladrillo), pausa (pizarra) — cada uno con
+  una variante clara para usarlos sobre fondo oscuro (solo borde y texto, sin
+  relleno, para no romper el negro)
+- **Geometría rectangular:** radio 0 y sin sombras en tarjetas, botones,
+  campos y diálogos. Las listas y rejillas (Pasar lista, KPIs, historial de
+  clases, "no pueden entrenar hoy") se dibujan con hairlines de 1px entre
+  filas y columnas, nunca con cajas sueltas y separadas
+- **Reparto claro/oscuro:** recepción entera en blanco — es la herramienta de
+  trabajo de horas. Acceso, la tarjeta del bono del deportista, el bono de
+  muestra del alta y la barra "Cerrar lista" van en tinta
+- **Seleccionado se rellena, no se colorea:** ficha marcada, filtros activos y
+  pestaña seleccionada usan relleno sólido invertido, nunca un color
+- **Elemento característico:** el medidor de sesiones, inclinado
+  `skewX(-11deg)`. Sobre fondo oscuro los huecos vacíos llevan además de su
+  contorno un fondo tenue (`rgba(255,255,255,.04)`) para poder contarlos de un
+  vistazo sobre el negro. Las sesiones arrastradas van con borde discontinuo
+- **Logotipo propio** en la cabecera — solo la palabra MOVE, sin bajada —
+  vía el componente `Logo` (`comunes.jsx`), que elige entre
+  `public/logo-move-blanco-1.png` (fondos oscuros) y
+  `logo-move-oscuro-1.png` (fondos claros) según dónde se coloque
+- Todo en CSS propio, sin framework. Variables CSS en `.bn` (`src/estilos.css`)
 
 ---
 
@@ -155,33 +177,41 @@ podría registrarse con el correo de otro y ver su historial.
 
 ```
 bonos-centro/
-├── .gitignore          excluye .env, claves, node_modules, *.sqlite
+├── .gitignore          excluye .env, claves, node_modules, dist/, *.sqlite
 ├── .env.example        nombres de variables, sin valores
-├── package.json        Vite + React 18
+├── package.json        Vite + React 18 + Vitest
 ├── index.html
-├── docs/CONTEXTO.md    este documento
+├── docs/
+│   ├── CONTEXTO.md      este documento
+│   └── ESTILO-MOVE.md   especificación de la identidad visual MOVE
+├── public/
+│   ├── logo-move-blanco-1.png   logotipo MOVE, para fondos oscuros
+│   └── logo-move-oscuro-1.png   logotipo MOVE, para fondos claros
 └── src/
     ├── main.jsx
-    ├── App.jsx         estado y orquestación
+    ├── App.jsx              estado y orquestación
     ├── estilos.css
-    ├── dominio/bonos.js    lógica pura: estado, restantes, caducidad
-    ├── datos/ejemplo.js    datos falsos, se borran al conectar la BD
+    ├── dominio/
+    │   ├── bonos.js         lógica pura: estado, restantes, caducidad,
+    │   │                    renovar, reactivar, prorrogar, anular
+    │   └── bonos.test.js    tests de Vitest sobre esas reglas
+    ├── datos/ejemplo.js     datos falsos, se borran al conectar la BD
     └── componentes/
-        ├── comunes.jsx     Medidor, Chip, Check, Clave
-        ├── acceso.jsx      Registro, Acceso, Verificar
-        ├── deportista.jsx  vista del bono
-        └── recepcion.jsx   pasar lista, clases, clientes, alta
+        ├── comunes.jsx      Medidor, Chip, Check, Clave, Logo
+        ├── acceso.jsx       Registro, Acceso, Verificar
+        ├── deportista.jsx   vista del bono
+        └── recepcion.jsx    pasar lista, clases, clientes, alta
 ```
 
-Un commit inicial. **Sin remoto configurado todavía.**
+Remoto configurado (`github.com/edutalfer/movebonos`). Los commits están
+hechos en local; **falta el primer `git push`.**
 
 ---
 
 ## 7. Lo que falta
 
 **Inmediato**
-- [ ] Pruebas automáticas de las reglas difíciles: arrastre, congelación, prórroga
-- [ ] Conectar a GitHub (lo hace el cliente, requiere sus credenciales)
+- [ ] Subir los commits locales a GitHub (`git push`)
 
 **Para que funcione de verdad**
 - [ ] Base de datos (los datos de ejemplo son en memoria y se pierden al recargar)
